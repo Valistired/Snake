@@ -1,7 +1,7 @@
 import random
 import pygame
 import sys
-
+#plswork
 pygame.init()
 
 screen_width = 800
