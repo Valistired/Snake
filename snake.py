@@ -39,6 +39,8 @@ class SnakeHead:
     
 class SnakeBody:
 
+    # Erik hat gemeint, dass für meine Idee für den Körper am besten als Linked List umgesetzt werden kann
+
     x = position_to_head_x
     y = position_to_head_y
     position_to_head_x = x - SnakeHead.x # nochmal überlegen
