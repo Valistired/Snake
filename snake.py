@@ -41,7 +41,9 @@ class SnakeHead:
                    self.y <= SnakeBody.y + SnakeBody.size
 
     def add_snake_part(self):
+        print("snakehead1")
         if self.first_body is None:
+            print("snake.py")
             self.first_body = SnakeBody(random.choice([0, screen_width-self.size]),
                                                                                random.choice([0, screen_height-self.size]))
         else:
@@ -70,7 +72,9 @@ class SnakeBody:
             self.next_body.draw()
 
     def add_snake_part(self):
+        print("argh")
         if self.next_body is None:
+            print("yo momma")
             self.next_body = SnakeBody(random.choice([0, screen_width-self.size]),
                                        random.choice([0, screen_height-self.size]))
         else:
@@ -91,6 +95,8 @@ class Food:
 head = SnakeHead()
 head.add_snake_part()
 head.add_snake_part()
+head.add_snake_part()
+
 
 running = True
 while running:
