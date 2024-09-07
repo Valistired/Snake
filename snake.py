@@ -50,8 +50,21 @@ class SnakeBody:
     size = 20
     initial_length = 3
 
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+    def newBodyPart(self, data):
+        new_part = newBodyPart(data)
+        if self.head is None:
+            self.head = new_part
+            return
+        else:
+            new_part.next = self.head
+            self.head = new_part
+
     def draw(self):
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, self.size, self.size)) 
+        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, self.size, self.size))
 
 
 class Food:
