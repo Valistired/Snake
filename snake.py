@@ -19,11 +19,14 @@ class SnakeHead:
     speed_y = 20
     size = 20
 
-    def __init__():
-        Placeholder
+    first_body = None
 
     def draw(self):
         pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y, self.size, self.size))
+
+        if self.first_body is not None:
+            self.first_body.draw()
+
 
     def eating(self, Food):
         return self.x + self.size >= Food.x and \
@@ -36,48 +39,58 @@ class SnakeHead:
                    self.x <= SnakeBody.x + SnakeBody.size and \
                    self.y + self.size >= SnakeBody.y and \
                    self.y <= SnakeBody.y + SnakeBody.size
+
+    def add_snake_part(self):
+        if self.first_body is None:
+            self.first_body = SnakeBody(random.choice([0, screen_width-self.size]),
+                                                                               random.choice([0, screen_height-self.size]))
+        else:
+            self.first_body.add_snake_part()
     
 class SnakeBody:
 
     # Erik hat gemeint, dass für meine Idee für den Körper am besten als Linked List umgesetzt werden kann
 
-    x = position_to_head_x
-    y = position_to_head_y
-    position_to_head_x = x - SnakeHead.x # nochmal überlegen
-    position_to_head_y = y - SnakeHead.y # nochmal überlegen
     speed_x = 20
     speed_y = 20
     size = 20
     initial_length = 3
 
-    def __init__(self, data):
-        self.data = data
-        self.next = None
+    next_body = None
 
-    def newBodyPart(self, data):
-        new_part = newBodyPart(data)
-        if self.head is None:
-            self.head = new_part
-            return
-        else:
-            new_part.next = self.head
-            self.head = new_part
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.next = None
 
     def draw(self):
         pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, self.size, self.size))
 
+        if self.next_body is not None:
+            self.next_body.draw()
+
+    def add_snake_part(self):
+        if self.next_body is None:
+            self.next_body = SnakeBody(random.choice([0, screen_width-self.size]),
+                                       random.choice([0, screen_height-self.size]))
+        else:
+            self.next_body.add_snake_part()
 
 class Food:
-
-    x = random.choice(0, screen_width-size_x)
-    y = random.choice(0, screen_height-size_y)
     size_x = 20
     size_y = 20
+
+    x = random.choice([0, screen_width-size_x])
+    y = random.choice([0, screen_height-size_y])
 
     def draw(self):
         pygame.draw.rect(screen, (255, 255, 255), (self.x, self.y, self.size, self.size))
 
 # -- end game init area --
+
+head = SnakeHead()
+head.add_snake_part()
+head.add_snake_part()
 
 running = True
 while running:
@@ -86,12 +99,14 @@ while running:
             running = False
     screen.fill((0, 0, 0))
 
+    head.draw()
+
 
 
  # -- end game tick --
 
     pygame.display.flip()
-    pygame.time.Clock().tick(1)
+    pygame.time.Clock().tick(30)
 
 pygame.quit()
 sys.exit()
