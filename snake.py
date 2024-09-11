@@ -2,6 +2,7 @@ import random
 import pygame
 import sys
 #plswork
+
 pygame.init()
 
 screen_width = 800
@@ -21,11 +22,29 @@ class SnakeHead:
 
     first_body = None
 
+    def __init__(self, x_position, y_position, key_up, key_down, key_left, key_right):
+        self.x = x_position
+        self.y = y_position
+        self.key_up = key_up
+        self.key_down = key_down
+        self.key_left = key_left
+        self.key_right = key_right
+
     def draw(self):
         pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y, self.size, self.size))
 
         if self.first_body is not None:
             self.first_body.draw()
+
+    def tick(self, keys):
+        if keys[self.key_up]:
+            self.y -= self.speed_y
+        elif keys[self.key_down]:
+            self.y += self.speed_y
+        elif keys[self.key_left]:
+            self.x -= self.speed_x
+        elif keys[self.key_right]:
+            self.x += self.speed_x
 
 
     def eating(self, Food):
@@ -41,9 +60,7 @@ class SnakeHead:
                    self.y <= SnakeBody.y + SnakeBody.size
 
     def add_snake_part(self):
-        print("snakehead1")
         if self.first_body is None:
-            print("snake.py")
             self.first_body = SnakeBody(random.choice([0, screen_width-self.size]),
                                                                                random.choice([0, screen_height-self.size]))
         else:
@@ -72,9 +89,7 @@ class SnakeBody:
             self.next_body.draw()
 
     def add_snake_part(self):
-        print("argh")
         if self.next_body is None:
-            print("yo momma")
             self.next_body = SnakeBody(random.choice([0, screen_width-self.size]),
                                        random.choice([0, screen_height-self.size]))
         else:
@@ -92,12 +107,12 @@ class Food:
 
 # -- end game init area --
 
-head = SnakeHead()
+head = SnakeHead(SnakeHead.speed_x, SnakeHead.speed_y, pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d)
 head.add_snake_part()
 head.add_snake_part()
 head.add_snake_part()
 
-
+# -- game tick --
 running = True
 while running:
     for event in pygame.event.get():
@@ -106,7 +121,10 @@ while running:
     screen.fill((0, 0, 0))
 
     head.draw()
+    
+    keys = pygame.key.get_pressed()
 
+    head.tick(keys)
 
 
  # -- end game tick --
